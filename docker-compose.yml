@@ -1,0 +1,30 @@
+version: '3.3'
+services:
+    math-game:
+        container_name: math-game
+        ports:
+            - '8000:80'
+        volumes:
+            - '/var/log/math-game:/app/log'
+        environment:
+            - TZ=Asia/Tbilisi
+            - ASPNETCORE_ENVIRONMENT=Production
+            - VIRTUAL_HOST=math.atozstore.ru
+            #- VIRTUAL_PORT=80
+            #- LETSENCRYPT_HOST=math-game.com,www.math-game.com
+            #- LETSENCRYPT_SINGLE_DOMAIN_CERTS=true
+        logging:
+            driver: "json-file"
+            options:
+                max-size: "200k"
+                max-file: "10"
+        cpu_count: 2
+        cpu_percent: 50
+        cpus: 1
+        mem_limit: 256m
+        mem_reservation: 256m        
+        build:
+            context: .
+            dockerfile: MathematicGameApi/Dockerfile        
+        network_mode: bridge
+        image: math-game
